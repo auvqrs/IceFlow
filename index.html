@@ -2,48 +2,27 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=, initial-scale=1.0">
     <title>IceFlow</title>
-
-    <link rel="icon" type="image/png" href="icon.png">
     <link rel="stylesheet" href="styles.css">
-    <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap" async defer></script>
-
-    <script src="script.js"></script>
+    <link rel="icon" href="icon.png">  
 </head>
 <body>
-    <nav class="navigation">
-        <a href="index.html" class="logo"><img src="icon.png" alt="IceFlow Logo"></a>
-        <a href="index.html" class="nav-link">Mapa</a>
-    </nav>
+    <div class="top">
+        <img src="icon.png">
+        <h1>IceFlow</h1>
+    </div>
 
-    <main class="adrese-red">
-        <section class="adrese-unos">
-            <h1>Unesite Adrese</h1>
-            <p>
-                Kliknite "Dodaj Adresu" da dodate novu adresu. 
-                Redosled adresa možete promeniti tako što ćete prevući postojeće adrese.
-            </p>
-            <button id="dodajAdresu">Dodaj Adresu</button>
-            <button id="resetBtn">Reset</button>
-            <br><br>
-            <p>
-                Kliknite "Reset" da izbrisete sve trenutno unete adrese.
-            </p>
-        </section>
+    <div class="adrese">
+        <input type="text" id="urlInput" placeholder="Unesi Adresu">
+        <button id="goButton">Dodaj</button>
 
-        <section class="adrese-lista">
-            <h1>Unete Adrese</h1>
-            <div id="adrese">
-            </div>
-        </section>
-    </main>
+        <ol>
+        </ol>
+    </div>
 
-    <div id="map" class="mapa"></div>
 
-    <footer class="footer">
-            <p>&copy; 2024 IceFlow</p>
-            <p>Miljan Kostic</p>
-    </footer>
+
+    <script src="script.js"></script>
 </body>
 </html>

@@ -1,64 +1,64 @@
-let map;
-let markers = [];
+const input = document.getElementById('urlInput');
+const button = document.getElementById('goButton');
+const list = document.querySelector('.adrese ol');
 
-// Initialize Google Map
-function initMap() {
-    map = new google.maps.Map(document.getElementById("map"), {
-        center: { lat: 44.8176, lng: 20.4569 }, // example: Belgrade
-        zoom: 12,
+function addAddressToList(addr) {
+    const li = document.createElement('li');
+    li.draggable = true;
+    li.style.cursor = 'grab';
+
+    const span = document.createElement('span');
+    span.textContent = addr;
+    li.appendChild(span);
+
+    const editBtn = document.createElement('button');
+    editBtn.textContent = 'Edit';
+    editBtn.style.marginLeft = '10px';
+    li.appendChild(editBtn);
+
+    const delBtn = document.createElement('button');
+    delBtn.textContent = 'Delete';
+    delBtn.style.marginLeft = '5px';
+    li.appendChild(delBtn);
+
+    delBtn.addEventListener('click', () => li.remove());
+
+    editBtn.addEventListener('click', () => {
+        const newVal = prompt('Edit address:', span.textContent);
+        if(newVal && newVal.trim() !== '') span.textContent = newVal.trim();
     });
+
+    li.addEventListener('dragstart', () => li.classList.add('dragging'));
+    li.addEventListener('dragend', () => li.classList.remove('dragging'));
+
+    list.addEventListener('dragover', e => {
+        e.preventDefault();
+        const afterElement = getDragAfterElement(list, e.clientY);
+        const dragging = document.querySelector('.dragging');
+        if(afterElement == null) list.appendChild(dragging);
+        else list.insertBefore(dragging, afterElement);
+    });
+
+    list.appendChild(li);
 }
 
-// DOM elements
-const adreseDiv = document.getElementById('adrese');
-const dodajBtn = document.getElementById('dodajAdresu');
-const resetBtn = document.getElementById('resetBtn');
-
-// Function to add address to the list
-function addAddress(addressText) {
-    const p = document.createElement('p');
-    p.textContent = addressText;
-    adreseDiv.appendChild(p);
+function getDragAfterElement(container, y) {
+    const draggableElements = [...container.querySelectorAll('li:not(.dragging)')];
+    return draggableElements.reduce((closest, child) => {
+        const box = child.getBoundingClientRect();
+        const offset = y - box.top - box.height / 2;
+        if(offset < 0 && offset > closest.offset) return { offset: offset, element: child };
+        else return closest;
+    }, { offset: Number.NEGATIVE_INFINITY }).element;
 }
 
-// Add Address button: choose manual or map
-dodajBtn.addEventListener('click', () => {
-    const choice = confirm('Kliknite "OK" da odaberete lokaciju sa mape, ili "Cancel" da unesete adresu ručno.');
-
-    if (choice) {
-        alert('Sada kliknite na mapu da izaberete lokaciju.');
-        
-        // Map click handler
-        const mapClickHandler = (event) => {
-            const lat = event.latLng.lat();
-            const lng = event.latLng.lng();
-
-            // Add marker
-            const marker = new google.maps.Marker({
-                position: event.latLng,
-                map: map,
-            });
-            markers.push(marker);
-
-            // Add location to addresses
-            addAddress(`Mapa lokacija: lat=${lat.toFixed(6)}, lng=${lng.toFixed(6)}`);
-
-            // Remove this listener after one click
-            google.maps.event.removeListener(mapClickHandlerObj);
-        };
-
-        // Google Maps addListener returns an object we can remove
-        const mapClickHandlerObj = map.addListener('click', mapClickHandler);
-
-    } else {
-        const address = prompt('Unesite adresu:'); 
-        if (address) addAddress(address);
-    }
+button.addEventListener('click', () => {
+    const addr = input.value.trim();
+    if(addr === '') return;
+    addAddressToList(addr);
+    input.value = '';
 });
 
-// Reset all addresses and markers
-resetBtn.addEventListener('click', () => {
-    adreseDiv.innerHTML = '';
-    markers.forEach(marker => marker.setMap(null));
-    markers = [];
+input.addEventListener('keypress', e => {
+    if(e.key === 'Enter') button.click();
 });
