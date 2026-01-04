@@ -14,20 +14,27 @@ body {
     background: #1f1f1f;
     height: 60px;
     display: flex;
+    justify-content: space-between;
     align-items: center;
     padding: 0 20px;
+}
+
+.top-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
 }
 
 .top img {
     height: 40px;
 }
 
-.top h1 {
-    margin-left: 12px;
-    font-size: 22px;
+.content {
+    display: flex;
 }
 
 .adrese {
+    width: 360px;
     padding: 20px;
     display: flex;
     flex-direction: column;
@@ -35,7 +42,6 @@ body {
 }
 
 #urlInput {
-    width: 320px;
     padding: 10px;
     border-radius: 8px;
     border: none;
@@ -45,10 +51,8 @@ body {
 
 #suggestions {
     list-style: none;
-    width: 320px;
     background: #1f1f1f;
     border-radius: 8px;
-    overflow: hidden;
 }
 
 #suggestions li {
@@ -56,12 +60,7 @@ body {
     cursor: pointer;
 }
 
-#suggestions li:hover {
-    background: #333;
-}
-
 button {
-    width: 200px;
     padding: 10px;
     border-radius: 8px;
     border: none;
@@ -70,30 +69,39 @@ button {
     cursor: pointer;
 }
 
-button:hover {
-    background: #555;
-}
-
 ol {
-    padding-left: 0;
+    list-style: none;
 }
 
 li {
     background: #1f1f1f;
-    padding: 10px;
+    padding: 12px;
     border-radius: 10px;
-    margin-bottom: 6px;
-    display: flex;
-    justify-content: space-between;
     cursor: grab;
 }
 
-li.dragging {
-    opacity: 0.6;
+#map {
+    flex: 1;
+    height: calc(100vh - 60px);
+    margin: 10px;
+    border-radius: 12px;
 }
 
-#map {
-    height: 400px;
-    margin: 20px;
-    border-radius: 12px;
+#map.fullscreen {
+    position: fixed;
+    inset: 60px 0 0 0;
+    border-radius: 0;
+    z-index: 10;
+}
+
+.numbered-marker div {
+    width: 26px;
+    height: 26px;
+    background: #2c0482;
+    color: #fff;
+    font-weight: bold;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
